@@ -2,6 +2,10 @@ name: homelab
 runtime:
   name: yaml
 
+config:
+  repo-url:
+    default: https://github.com/szmyty/homelab.git
+
 resources:
   # VPC Network
   homelab-network:
@@ -57,31 +61,6 @@ resources:
       targetTags:
         - homelab
 
-  # Cloud-init script
-  cloud-init:
-    type: pulumi:providers:Command
-    properties:
-      create: |
-        cat <<'EOF'
-        #cloud-config
-        package_update: true
-        package_upgrade: true
-        packages:
-          - docker.io
-          - docker-compose
-          - git
-          - curl
-          - jq
-
-        runcmd:
-          - systemctl enable docker
-          - systemctl start docker
-          - usermod -aG docker ubuntu
-          - git clone https://github.com/OWNER/homelab.git /opt/homelab
-          - cd /opt/homelab && ./scripts/bootstrap.sh
-          - cd /opt/homelab && ./scripts/deploy_local.sh --bundle core
-        EOF
-
   # Compute Instance
   homelab-vm:
     type: gcp:compute:Instance
@@ -104,14 +83,29 @@ resources:
         ssh-keys: ubuntu:${ssh-public-key}
       metadataStartupScript: |
         #!/bin/bash
+        set -euo pipefail
+
+        # Install dependencies
         apt-get update
-        apt-get install -y docker.io docker-compose git curl jq
+        apt-get install --yes docker.io docker-compose git curl jq
+
+        # Enable and start Docker
         systemctl enable docker
         systemctl start docker
-        usermod -aG docker ubuntu
-        git clone https://github.com/OWNER/homelab.git /opt/homelab || true
+        usermod --append --groups docker ubuntu
+
+        # Clone repository
+        REPO_URL="${repo-url}"
+        if [[ ! -d /opt/homelab ]]; then
+            git clone "${REPO_URL}" /opt/homelab
+        else
+            cd /opt/homelab && git pull
+        fi
+
+        # Run bootstrap
         cd /opt/homelab
-        ./scripts/bootstrap.sh || true
+        chmod +x scripts/*.sh
+        ./scripts/bootstrap.sh
 
 outputs:
   vmName: ${homelab-vm.name}

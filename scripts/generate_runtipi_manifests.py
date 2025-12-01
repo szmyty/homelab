@@ -4,6 +4,8 @@ Generate Runtipi manifests from service metadata.yml files.
 
 This script reads metadata.yml files from services/ directories
 and generates Runtipi-compatible JSON manifest files.
+
+Requires: Python 3.8+, PyYAML
 """
 
 import argparse
@@ -11,7 +13,7 @@ import json
 import os
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, Optional
 
 try:
     import yaml
@@ -20,7 +22,7 @@ except ImportError:
     sys.exit(1)
 
 
-def load_metadata(service_path: Path) -> dict[str, Any] | None:
+def load_metadata(service_path: Path) -> Optional[Dict[str, Any]]:
     """Load metadata.yml from a service directory."""
     metadata_file = service_path / "metadata.yml"
 
@@ -31,7 +33,7 @@ def load_metadata(service_path: Path) -> dict[str, Any] | None:
         return yaml.safe_load(f)
 
 
-def generate_runtipi_manifest(metadata: dict[str, Any]) -> dict[str, Any]:
+def generate_runtipi_manifest(metadata: Dict[str, Any]) -> Dict[str, Any]:
     """Generate Runtipi manifest from service metadata."""
     manifest = {
         "$schema": "https://raw.githubusercontent.com/runtipi/runtipi/main/packages/worker/assets/config.schema.json",

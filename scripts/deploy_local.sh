@@ -90,26 +90,28 @@ parse_args() {
 
 get_compose_files() {
     local bundle="$1"
-    local files=""
+    local files=()
 
     case "${bundle}" in
         core)
-            files="${COMPOSE_DIR}/core.yml"
+            files=("${COMPOSE_DIR}/core.yml")
             ;;
         media)
-            files="${COMPOSE_DIR}/media.yml"
+            files=("${COMPOSE_DIR}/media.yml")
             ;;
         vault)
-            files="${COMPOSE_DIR}/vault.yml"
+            files=("${COMPOSE_DIR}/vault.yml")
             ;;
         docs)
-            files="${COMPOSE_DIR}/docs.yml"
+            files=("${COMPOSE_DIR}/docs.yml")
             ;;
         all)
-            files="${COMPOSE_DIR}/core.yml"
-            files="${files} --file ${COMPOSE_DIR}/media.yml"
-            files="${files} --file ${COMPOSE_DIR}/vault.yml"
-            files="${files} --file ${COMPOSE_DIR}/docs.yml"
+            files=(
+                "${COMPOSE_DIR}/core.yml"
+                "${COMPOSE_DIR}/media.yml"
+                "${COMPOSE_DIR}/vault.yml"
+                "${COMPOSE_DIR}/docs.yml"
+            )
             ;;
         *)
             log_error "Unknown bundle: ${bundle}"
@@ -117,7 +119,16 @@ get_compose_files() {
             ;;
     esac
 
-    echo "${files}"
+    # Return files as space-separated list with --file prefixes
+    local result=""
+    for file in "${files[@]}"; do
+        if [[ -n "${result}" ]]; then
+            result="${result} --file ${file}"
+        else
+            result="${file}"
+        fi
+    done
+    echo "${result}"
 }
 
 run_compose() {

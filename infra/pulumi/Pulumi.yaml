@@ -16,3 +16,6 @@ config:
   ssh-public-key:
     description: SSH public key for VM access
     secret: true
+  repo-url:
+    description: Git repository URL for homelab
+    default: https://github.com/szmyty/homelab.git

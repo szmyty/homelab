@@ -34,9 +34,9 @@ status.{$DOMAIN} {
 	reverse_proxy uptime-kuma:3001
 }
 
-# qBittorrent
+# qBittorrent (via Gluetun VPN container)
 torrent.{$DOMAIN} {
-	reverse_proxy qbittorrent:8085
+	reverse_proxy gluetun:8085
 }
 
 # Syncthing

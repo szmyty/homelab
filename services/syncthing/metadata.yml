@@ -1,0 +1,32 @@
+name: Syncthing
+id: syncthing
+description: A continuous file synchronization program for real-time sync
+short_description: Continuous file synchronization
+version: latest
+author: Syncthing Foundation
+source: https://github.com/syncthing/syncthing
+port: 8384
+categories:
+  - backup
+  - utilities
+available: true
+environment:
+  - name: TZ
+    label: Timezone
+    type: text
+    required: false
+    default: America/New_York
+  - name: PUID
+    label: User ID
+    type: number
+    required: false
+    default: "1000"
+  - name: PGID
+    label: Group ID
+    type: number
+    required: false
+    default: "1000"
+  - name: SYNC_PATH
+    label: Sync Path
+    type: text
+    required: true

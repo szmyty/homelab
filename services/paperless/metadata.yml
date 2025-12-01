@@ -1,0 +1,31 @@
+name: Paperless-ngx
+id: paperless
+description: A community-supported supercharged version of paperless for document management
+short_description: Document management with OCR
+version: latest
+author: Paperless-ngx Team
+source: https://github.com/paperless-ngx/paperless-ngx
+port: 8000
+categories:
+  - productivity
+  - documents
+available: true
+environment:
+  - name: TZ
+    label: Timezone
+    type: text
+    required: false
+    default: America/New_York
+  - name: PAPERLESS_SECRET_KEY
+    label: Secret Key
+    type: password
+    required: true
+  - name: PAPERLESS_OCR_LANGUAGE
+    label: OCR Language
+    type: text
+    required: false
+    default: eng
+  - name: CONSUME_PATH
+    label: Consume Path
+    type: text
+    required: true

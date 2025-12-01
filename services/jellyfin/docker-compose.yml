@@ -1,0 +1,25 @@
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ:-America/New_York}
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+    volumes:
+      - jellyfin_config:/config
+      - jellyfin_cache:/cache
+      - ${MEDIA_PATH:-/media}:/media:ro
+    ports:
+      - "8096:8096"
+    networks:
+      - homelab
+
+volumes:
+  jellyfin_config:
+  jellyfin_cache:
+
+networks:
+  homelab:
+    external: true

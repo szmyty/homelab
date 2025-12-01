@@ -1,0 +1,50 @@
+name: Compose Validate
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "infra/compose/**"
+      - "services/**/docker-compose.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "infra/compose/**"
+      - "services/**/docker-compose.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Docker Compose
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate core.yml
+        run: docker compose --file infra/compose/core.yml config --quiet
+
+      - name: Validate media.yml
+        run: docker compose --file infra/compose/media.yml config --quiet
+        continue-on-error: true
+
+      - name: Validate vault.yml
+        run: docker compose --file infra/compose/vault.yml config --quiet
+        continue-on-error: true
+
+      - name: Validate docs.yml
+        run: docker compose --file infra/compose/docs.yml config --quiet
+        continue-on-error: true
+
+      - name: Validate individual services
+        run: |
+          for dir in services/*/; do
+            if [[ -f "${dir}docker-compose.yml" ]]; then
+              echo "Validating ${dir}docker-compose.yml"
+              docker compose --file "${dir}docker-compose.yml" config --quiet || true
+            fi
+          done

@@ -1,0 +1,4 @@
+# Paperless-ngx reverse proxy configuration
+docs.{$DOMAIN} {
+	reverse_proxy paperless:8000
+}

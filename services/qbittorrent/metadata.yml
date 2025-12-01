@@ -1,0 +1,37 @@
+name: qBittorrent
+id: qbittorrent
+description: qBittorrent with VPN integration via Gluetun for secure torrenting
+short_description: Torrent client with VPN kill switch
+version: latest
+author: LinuxServer.io
+source: https://github.com/linuxserver/docker-qbittorrent
+port: 8085
+categories:
+  - media
+  - downloads
+available: true
+environment:
+  - name: TZ
+    label: Timezone
+    type: text
+    required: false
+    default: America/New_York
+  - name: PUID
+    label: User ID
+    type: number
+    required: false
+    default: "1000"
+  - name: PGID
+    label: Group ID
+    type: number
+    required: false
+    default: "1000"
+  - name: VPN_SERVICE_PROVIDER
+    label: VPN Provider
+    type: text
+    required: true
+    default: mullvad
+  - name: DOWNLOAD_PATH
+    label: Download Path
+    type: text
+    required: true

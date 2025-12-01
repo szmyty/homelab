@@ -1,0 +1,114 @@
+name: homelab
+runtime:
+  name: yaml
+
+config:
+  repo-url:
+    default: https://github.com/szmyty/homelab.git
+
+resources:
+  # VPC Network
+  homelab-network:
+    type: gcp:compute:Network
+    properties:
+      name: homelab-network
+      autoCreateSubnetworks: false
+
+  # Subnet
+  homelab-subnet:
+    type: gcp:compute:Subnetwork
+    properties:
+      name: homelab-subnet
+      network: ${homelab-network.id}
+      ipCidrRange: 10.0.1.0/24
+      region: ${gcp:region}
+
+  # Static External IP
+  homelab-ip:
+    type: gcp:compute:Address
+    properties:
+      name: homelab-ip
+      region: ${gcp:region}
+
+  # Firewall - Allow HTTP/HTTPS
+  firewall-web:
+    type: gcp:compute:Firewall
+    properties:
+      name: homelab-allow-web
+      network: ${homelab-network.id}
+      allows:
+        - protocol: tcp
+          ports:
+            - "80"
+            - "443"
+      sourceRanges:
+        - "0.0.0.0/0"
+      targetTags:
+        - homelab
+
+  # Firewall - Allow SSH
+  firewall-ssh:
+    type: gcp:compute:Firewall
+    properties:
+      name: homelab-allow-ssh
+      network: ${homelab-network.id}
+      allows:
+        - protocol: tcp
+          ports:
+            - "22"
+      sourceRanges:
+        - "0.0.0.0/0"
+      targetTags:
+        - homelab
+
+  # Compute Instance
+  homelab-vm:
+    type: gcp:compute:Instance
+    properties:
+      name: homelab-vm
+      machineType: ${vm-size}
+      zone: ${gcp:zone}
+      tags:
+        - homelab
+      bootDisk:
+        initializeParams:
+          image: ubuntu-os-cloud/ubuntu-2204-lts
+          size: 50
+      networkInterfaces:
+        - network: ${homelab-network.id}
+          subnetwork: ${homelab-subnet.id}
+          accessConfigs:
+            - natIp: ${homelab-ip.address}
+      metadata:
+        ssh-keys: ubuntu:${ssh-public-key}
+      metadataStartupScript: |
+        #!/bin/bash
+        set -euo pipefail
+
+        # Install dependencies
+        apt-get update
+        apt-get install --yes docker.io docker-compose git curl jq
+
+        # Enable and start Docker
+        systemctl enable docker
+        systemctl start docker
+        usermod --append --groups docker ubuntu
+
+        # Clone repository
+        REPO_URL="${repo-url}"
+        if [[ ! -d /opt/homelab ]]; then
+            git clone "${REPO_URL}" /opt/homelab
+        else
+            cd /opt/homelab && git pull
+        fi
+
+        # Run bootstrap
+        cd /opt/homelab
+        chmod +x scripts/*.sh
+        ./scripts/bootstrap.sh
+
+outputs:
+  vmName: ${homelab-vm.name}
+  vmExternalIp: ${homelab-ip.address}
+  vmInternalIp: ${homelab-vm.networkInterfaces[0].networkIp}
+  sshCommand: ssh ubuntu@${homelab-ip.address}

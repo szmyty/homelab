@@ -1,0 +1,11 @@
+# ShellCheck configuration
+# https://www.shellcheck.net/
+
+# Default shell
+shell=bash
+
+# Enable all checks
+enable=all
+
+# Disable specific checks
+disable=SC2154  # Variable referenced but not assigned (handled by set -u)

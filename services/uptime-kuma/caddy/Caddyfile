@@ -1,0 +1,4 @@
+# Uptime Kuma reverse proxy configuration
+status.{$DOMAIN} {
+	reverse_proxy uptime-kuma:3001
+}

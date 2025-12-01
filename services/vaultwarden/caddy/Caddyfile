@@ -1,0 +1,4 @@
+# Vaultwarden reverse proxy configuration
+vault.{$DOMAIN} {
+	reverse_proxy vaultwarden:80
+}

@@ -1,0 +1,60 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+*.md
+docs/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# CI/CD
+.github/
+
+# Dev container
+.devcontainer/
+
+# Secrets
+*.key
+*.pem
+*.crt
+.env
+secrets/
+
+# Pulumi
+.pulumi/
+Pulumi.*.yaml
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# Node
+node_modules/
+
+# Logs
+*.log
+logs/
+
+# Temporary
+tmp/
+temp/
+*.tmp
+*.bak
+
+# Test files
+*_test.go
+*_test.py
+test/
+tests/

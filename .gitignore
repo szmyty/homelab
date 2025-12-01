@@ -1,0 +1,70 @@
+# Environment files
+.env
+*.env
+!*.env.example
+!env.example
+
+# Secrets
+*.key
+*.pem
+*.crt
+*.p12
+secrets/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Pulumi
+.pulumi/
+Pulumi.*.yaml.bak
+
+# Terraform/OpenTofu
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+.venv/
+*.egg-info/
+
+# Node
+node_modules/
+
+# Logs
+*.log
+logs/
+
+# Backups
+*.bak
+backup/
+backups/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Docker
+docker-compose.override.yml
+
+# Generated files
+manifests/runtipi/*.json
+
+# Encrypted volumes (keep config, ignore actual encrypted data)
+.media/
+*.encrypted

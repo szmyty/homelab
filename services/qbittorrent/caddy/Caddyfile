@@ -1,0 +1,4 @@
+# qBittorrent reverse proxy configuration
+torrent.{$DOMAIN} {
+	reverse_proxy gluetun:8085
+}

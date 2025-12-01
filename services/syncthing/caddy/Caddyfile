@@ -1,0 +1,4 @@
+# Syncthing reverse proxy configuration
+sync.{$DOMAIN} {
+	reverse_proxy syncthing:8384
+}

@@ -1,0 +1,32 @@
+name: Jellyfin
+id: jellyfin
+description: The Free Software Media System - Stream media to any device
+short_description: Open-source media server
+version: latest
+author: Jellyfin Project
+source: https://github.com/jellyfin/jellyfin
+port: 8096
+categories:
+  - media
+  - entertainment
+available: true
+environment:
+  - name: TZ
+    label: Timezone
+    type: text
+    required: false
+    default: America/New_York
+  - name: PUID
+    label: User ID
+    type: number
+    required: false
+    default: "1000"
+  - name: PGID
+    label: Group ID
+    type: number
+    required: false
+    default: "1000"
+  - name: MEDIA_PATH
+    label: Media Path
+    type: text
+    required: true

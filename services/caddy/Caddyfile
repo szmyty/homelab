@@ -1,0 +1,45 @@
+# Global Caddyfile
+# Configure your domain and services below
+
+{
+	# Email for Let's Encrypt
+	email {$ACME_EMAIL}
+
+	# Enable debug logging (remove in production)
+	# debug
+}
+
+# Default site - shows status page
+{$DOMAIN} {
+	respond "Homelab is running" 200
+}
+
+# Jellyfin
+jellyfin.{$DOMAIN} {
+	reverse_proxy jellyfin:8096
+}
+
+# Vaultwarden
+vault.{$DOMAIN} {
+	reverse_proxy vaultwarden:80
+}
+
+# Paperless-ngx
+docs.{$DOMAIN} {
+	reverse_proxy paperless:8000
+}
+
+# Uptime Kuma
+status.{$DOMAIN} {
+	reverse_proxy uptime-kuma:3001
+}
+
+# qBittorrent
+torrent.{$DOMAIN} {
+	reverse_proxy qbittorrent:8085
+}
+
+# Syncthing
+sync.{$DOMAIN} {
+	reverse_proxy syncthing:8384
+}

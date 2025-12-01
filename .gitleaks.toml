@@ -1,0 +1,15 @@
+# Gitleaks configuration
+# https://github.com/gitleaks/gitleaks
+
+title = "homelab gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Global allowlist"
+paths = [
+    '''\.env\.example$''',
+    '''env\.example$''',
+    '''\.md$''',
+]

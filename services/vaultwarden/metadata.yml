@@ -1,0 +1,26 @@
+name: Vaultwarden
+id: vaultwarden
+description: Alternative implementation of the Bitwarden server API in Rust
+short_description: Self-hosted password manager
+version: latest
+author: Vaultwarden
+source: https://github.com/dani-garcia/vaultwarden
+port: 8080
+categories:
+  - security
+  - utilities
+available: true
+environment:
+  - name: DOMAIN
+    label: Vaultwarden Domain
+    type: url
+    required: true
+  - name: SIGNUPS_ALLOWED
+    label: Allow Signups
+    type: boolean
+    required: false
+    default: "true"
+  - name: ADMIN_TOKEN
+    label: Admin Token
+    type: password
+    required: false

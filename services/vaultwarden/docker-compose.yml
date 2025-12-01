@@ -1,0 +1,29 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: unless-stopped
+    environment:
+      - DOMAIN=${DOMAIN:-https://vault.homelab.local}
+      - SIGNUPS_ALLOWED=${SIGNUPS_ALLOWED:-true}
+      - INVITATIONS_ALLOWED=${INVITATIONS_ALLOWED:-true}
+      - ADMIN_TOKEN=${ADMIN_TOKEN:-}
+      - SMTP_HOST=${SMTP_HOST:-}
+      - SMTP_FROM=${SMTP_FROM:-}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_SECURITY=${SMTP_SECURITY:-starttls}
+      - SMTP_USERNAME=${SMTP_USERNAME:-}
+      - SMTP_PASSWORD=${SMTP_PASSWORD:-}
+    volumes:
+      - vaultwarden_data:/data
+    ports:
+      - "8080:80"
+    networks:
+      - homelab
+
+volumes:
+  vaultwarden_data:
+
+networks:
+  homelab:
+    external: true

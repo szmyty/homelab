@@ -1,0 +1,18 @@
+# Hadolint configuration
+# https://github.com/hadolint/hadolint
+
+ignored:
+  - DL3008  # Pin versions in apt-get install
+  - DL3013  # Pin versions in pip install
+
+trustedRegistries:
+  - docker.io
+  - ghcr.io
+  - mcr.microsoft.com
+  - quay.io
+
+format: tty
+
+strict-labels: false
+
+failure-threshold: warning

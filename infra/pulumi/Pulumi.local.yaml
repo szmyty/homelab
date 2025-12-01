@@ -1,0 +1,15 @@
+name: homelab
+runtime:
+  name: yaml
+
+resources:
+  # Local Docker network for homelab
+  homelab-network:
+    type: docker:Network
+    properties:
+      name: homelab
+
+outputs:
+  networkName: ${homelab-network.name}
+  networkId: ${homelab-network.id}
+  message: Local homelab network created. Use docker compose to deploy services.

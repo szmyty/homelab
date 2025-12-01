@@ -1,0 +1,22 @@
+name: Caddy
+id: caddy
+description: Fast, multi-platform web server with automatic HTTPS
+short_description: Reverse proxy with automatic HTTPS
+version: "2"
+author: Caddy Project
+source: https://github.com/caddyserver/caddy
+port: 443
+categories:
+  - networking
+  - security
+available: true
+environment:
+  - name: DOMAIN
+    label: Domain Name
+    type: text
+    required: true
+    default: homelab.local
+  - name: ACME_EMAIL
+    label: ACME Email
+    type: email
+    required: true
